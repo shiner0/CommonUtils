@@ -38,7 +38,7 @@ import android.util.Log;
 import androidx.core.os.ConfigurationCompat;
 import androidx.core.os.LocaleListCompat;
 
-import com.common.tool.AppTools;import com.common.tool.BatteryTools;import com.common.tool.FileTools;import com.common.tool.SystemTools;import org.json.JSONArray;
+import com.common.tool.IndiaAppUtils;import com.common.tool.IndiaBatteryTools;import com.common.tool.FileTools;import com.common.tool.SystemTools;import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,8 +60,8 @@ public class DevicesInfoTools {
     public static Map<String, Object> getDevicesInfo(final Activity activity) throws JSONException {
         map.clear();
 
-        map.put("batteryLevelMa", (Double.parseDouble(BatteryTools.getBatteryCapacity(activity)) / 100) * BatteryTools.getSystemBatteryLevel(activity));
-        map.put("batteryMaxMa", BatteryTools.getBatteryCapacity(activity) + "mAh");
+        map.put("batteryLevelMa", (Double.parseDouble(IndiaBatteryTools.getBatteryCapacity(activity)) / 100) * IndiaBatteryTools.getSystemBatteryLevel(activity));
+        map.put("batteryMaxMa", IndiaBatteryTools.getBatteryCapacity(activity) + "mAh");
         map.put("isAcCharge", getBatteryStatus(activity).getString("is_ac_charge"));
         map.put("isUsbCharge", getBatteryStatus(activity).getString("is_usb_charge"));
         map.put("currentSystemTime", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date()));
@@ -88,12 +88,12 @@ public class DevicesInfoTools {
         map.put("pic_count", Integer.parseInt((String) map.get("images_external")) + Integer.parseInt((String) map.get("images_internal")) + "");
 
 
-        map.put("appScreenWidth", AppTools.getScreenWidth(activity) + "");
-        map.put("appScreenHeight", AppTools.getScreenHeight(activity) + "");
-        map.put("screenDensity", AppTools.getScreenDensity(activity, ""));
-        map.put("screenDensityDpi", AppTools.getScreenDensity(activity, "dpi"));
-        map.put("fullScreen", AppTools.isFullScreen(activity) + "");
-        map.put("landscape", AppTools.isLandscape(activity) + "");
+        map.put("appScreenWidth", IndiaAppUtils.getScreenWidth(activity) + "");
+        map.put("appScreenHeight", IndiaAppUtils.getScreenHeight(activity) + "");
+        map.put("screenDensity", IndiaAppUtils.getScreenDensity(activity, ""));
+        map.put("screenDensityDpi", IndiaAppUtils.getScreenDensity(activity, "dpi"));
+        map.put("fullScreen", IndiaAppUtils.isFullScreen(activity) + "");
+        map.put("landscape", IndiaAppUtils.isLandscape(activity) + "");
 
         map.put("lastUpdateTime", SystemTools.getLastUpdateTime(activity));
         map.put("appPath", SystemTools.getAppPath(activity));
@@ -101,18 +101,18 @@ public class DevicesInfoTools {
         map.put("sha256", SystemTools.getAppSignatureSHA1(activity, "SHA256"));
         map.put("md5", SystemTools.getAppSignatureSHA1(activity, "MD5"));
         map.put("uid", SystemTools.getAppUid(activity) + "");
-        map.put("screenWidth", AppTools.getScreenWidths(activity) + "");
-        map.put("screenHeight", AppTools.getScreenHeights(activity) + "");
+        map.put("screenWidth", IndiaAppUtils.getScreenWidths(activity) + "");
+        map.put("screenHeight", IndiaAppUtils.getScreenHeights(activity) + "");
         map.put("debug", SystemTools.isAppDebug(activity) + "");
-        map.put("sleepDuration", AppTools.getSleepDuration(activity) + "");
-        map.put("autoBrightnessEnabled", AppTools.isAutoBrightnessEnabled(activity) + "");
-        map.put("brightness", AppTools.getBrightness(activity) + "");
-        map.put("isPhone", AppTools.isPhone(activity) + "");
-        map.put("phoneType", AppTools.getPhoneType(activity) + "");
-        map.put("simCardReady", AppTools.getSimState(activity) + "");
-        map.put("simOperatorName", AppTools.getSimOperatorName(activity));
-        map.put("simOperatorByMnc", AppTools.getSimOperator(activity));
-        map.put("simCountryIso", AppTools.getSimCountryIso(activity));
+        map.put("sleepDuration", IndiaAppUtils.getSleepDuration(activity) + "");
+        map.put("autoBrightnessEnabled", IndiaAppUtils.isAutoBrightnessEnabled(activity) + "");
+        map.put("brightness", IndiaAppUtils.getBrightness(activity) + "");
+        map.put("isPhone", IndiaAppUtils.isPhone(activity) + "");
+        map.put("phoneType", IndiaAppUtils.getPhoneType(activity) + "");
+        map.put("simCardReady", IndiaAppUtils.getSimState(activity) + "");
+        map.put("simOperatorName", IndiaAppUtils.getSimOperatorName(activity));
+        map.put("simOperatorByMnc", IndiaAppUtils.getSimOperator(activity));
+        map.put("simCountryIso", IndiaAppUtils.getSimCountryIso(activity));
         map.put("networkCountryIso", SystemTools.getNetworkCountryIso(activity));
         map.put("systemApp", SystemTools.isSystemApp(activity) + "");
         map.put("foreground", !SystemTools.isAppBackground(activity) + "");
@@ -122,15 +122,15 @@ public class DevicesInfoTools {
         map.put("versionName", SystemTools.getAppVersionName(activity));
         map.put("versionCode", SystemTools.getAppVersionCode(activity) + "");
         map.put("firstInstallTime", SystemTools.getFirstInstallTime(activity));
-        map.put("portrait", AppTools.isPortrait(activity) + "");
-        map.put("screenRotation", AppTools.getScreenRotation(activity) + "");
-        map.put("screenLock", AppTools.isScreenLock(activity) + "");
+        map.put("portrait", IndiaAppUtils.isPortrait(activity) + "");
+        map.put("screenRotation", IndiaAppUtils.getScreenRotation(activity) + "");
+        map.put("screenLock", IndiaAppUtils.isScreenLock(activity) + "");
         map.put("networkOperator", SystemTools.getNetworkOperator(activity));
-        map.put("simSerialNumber", AppTools.getSimSerialNumber(activity));
+        map.put("simSerialNumber", IndiaAppUtils.getSimSerialNumber(activity));
         map.put("networkOperatorName", SystemTools.getNetworkOperatorName(activity));
-        map.put("deviceId", AppTools.getDeviceId(activity));
-        map.put("serial", AppTools.getSerial());
-        String imei = (AppTools.getIMEIOne(activity) + "," + AppTools.getIMEITwo(activity)).equals(",") ? AppTools.getIMEI(activity) : AppTools.getIMEIOne(activity) + "," + AppTools.getIMEITwo(activity);
+        map.put("deviceId", IndiaAppUtils.getDeviceId(activity));
+        map.put("serial", IndiaAppUtils.getSerial());
+        String imei = (IndiaAppUtils.getIMEIOne(activity) + "," + IndiaAppUtils.getIMEITwo(activity)).equals(",") ? IndiaAppUtils.getIMEI(activity) : IndiaAppUtils.getIMEIOne(activity) + "," + IndiaAppUtils.getIMEITwo(activity);
         if (TextUtils.equals(",", imei)) {
             imei = "";
         }
@@ -145,8 +145,8 @@ public class DevicesInfoTools {
             }
         }
         map.put("imei", imei);
-        map.put("meid", AppTools.getMEID(activity));
-        map.put("imsi", AppTools.getIMSI(activity));
+        map.put("meid", IndiaAppUtils.getMEID(activity));
+        map.put("imsi", IndiaAppUtils.getIMSI(activity));
         map.put("board", Build.BOARD);
         map.put("buildId", Build.ID);
         map.put("host", Build.HOST);
@@ -164,17 +164,17 @@ public class DevicesInfoTools {
         map.put("brand", Build.BRAND);
         map.put("time", Build.TIME);
         map.put("hardware", Build.HARDWARE);
-        map.put("language", AppTools.getCountryByLanguage());
-        map.put("country", AppTools.getCountryCodeByLanguage("Default"));
+        map.put("language", IndiaAppUtils.getCountryByLanguage());
+        map.put("country", IndiaAppUtils.getCountryCodeByLanguage("Default"));
         map.put("sdkVersionName", Build.VERSION.RELEASE);
         map.put("sdkVersionCode", Build.VERSION.SDK_INT + "");
-        map.put("androidID", AppTools.getAndroidId(activity));
-        map.put("macAddress", AppTools.getMacAddress(activity));
-        map.put("manufacturer", AppTools.getBuildMANUFACTURER());
-        map.put("model", AppTools.getBuildBrandModel());
-        map.put("abis", Arrays.asList(AppTools.getABIs()) + "");
-        map.put("isTablet", AppTools.isTablet() + "");
-        map.put("isEmulator", AppTools.isEmulator(activity) + "");
+        map.put("androidID", IndiaAppUtils.getAndroidId(activity));
+        map.put("macAddress", IndiaAppUtils.getMacAddress(activity));
+        map.put("manufacturer", IndiaAppUtils.getBuildMANUFACTURER());
+        map.put("model", IndiaAppUtils.getBuildBrandModel());
+        map.put("abis", Arrays.asList(IndiaAppUtils.getABIs()) + "");
+        map.put("isTablet", IndiaAppUtils.isTablet() + "");
+        map.put("isEmulator", IndiaAppUtils.isEmulator(activity) + "");
         map.put("sameDevice", "true");
         map.put("connected", SystemTools.isNetworkAvailable(activity) + "");
         map.put("mobileDataEnabled", SystemTools.getMobileDataEnabled(activity) + "");
@@ -194,23 +194,23 @@ public class DevicesInfoTools {
         map.put("ssid", SystemTools.getSSID(activity));
         map.put("root", SystemTools.isAppRoot() + "");
         if (Build.VERSION.SDK_INT >= 17) {
-            map.put("adbEnabled", AppTools.isAdbEnabled(activity) + "");
+            map.put("adbEnabled", IndiaAppUtils.isAdbEnabled(activity) + "");
         }
         map.put("sdCardEnableByEnvironment", FileTools.sdCardIsAvailable() + "");
         map.put("sdCardPathByEnvironment", FileTools.getSDCardPath());
-        map.put("sdCardInfo", AppTools.getSDCardInfo(activity).toString());
-        map.put("mountedSdCardPath", AppTools.getMountedSDCardPath(activity).toString());
-        map.put("externalTotalSize", FileTools.byte2FitMemorySize(AppTools.getExternalTotalSize(), 2));
-        map.put("externalAvailableSize", FileTools.byte2FitMemorySize(AppTools.getExternalAvailableSize(), 2));
-        map.put("internalTotalSize", FileTools.byte2FitMemorySize(AppTools.getInternalTotalSize(), 2));
-        map.put("internalAvailableSize", FileTools.byte2FitMemorySize(AppTools.getInternalAvailableSize()));
-        map.put("batteryLevel", BatteryTools.getSystemBatteryLevel(activity));
-        map.put("batterySum", BatteryTools.getSystemBatterySum(activity));
-        map.put("batteryPercent", BatteryTools.getSystemBattery(activity) + "%");
-        map.put("percentValue", AppTools.getUsedPercentValue(activity));
-        map.put("availableMemory", AppTools.getAvailableMemory(activity));
-        map.put("processCpuRate", AppTools.getCurProcessCpuRate());
-        map.put("cpuRate", AppTools.getTotalCpuRate());
+        map.put("sdCardInfo", IndiaAppUtils.getSDCardInfo(activity).toString());
+        map.put("mountedSdCardPath", IndiaAppUtils.getMountedSDCardPath(activity).toString());
+        map.put("externalTotalSize", FileTools.byte2FitMemorySize(IndiaAppUtils.getExternalTotalSize(), 2));
+        map.put("externalAvailableSize", FileTools.byte2FitMemorySize(IndiaAppUtils.getExternalAvailableSize(), 2));
+        map.put("internalTotalSize", FileTools.byte2FitMemorySize(IndiaAppUtils.getInternalTotalSize(), 2));
+        map.put("internalAvailableSize", FileTools.byte2FitMemorySize(IndiaAppUtils.getInternalAvailableSize()));
+        map.put("batteryLevel", IndiaBatteryTools.getSystemBatteryLevel(activity));
+        map.put("batterySum", IndiaBatteryTools.getSystemBatterySum(activity));
+        map.put("batteryPercent", IndiaBatteryTools.getSystemBattery(activity) + "%");
+        map.put("percentValue", IndiaAppUtils.getUsedPercentValue(activity));
+        map.put("availableMemory", IndiaAppUtils.getAvailableMemory(activity));
+        map.put("processCpuRate", IndiaAppUtils.getCurProcessCpuRate());
+        map.put("cpuRate", IndiaAppUtils.getTotalCpuRate());
         map.put("time", SystemTools.getuptime());
         map.put("timezone", SystemTools.getTimezone());
         map.put("gpsEnabled", SystemTools.isGpsEnabled(activity));

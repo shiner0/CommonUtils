@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 
-internal object BatteryTools {
+internal object IndiaBatteryTools {
     @JvmStatic
     fun getSystemBatteryLevel(context: Context?): Int {
         val batteryInfoIntent = context!!.applicationContext

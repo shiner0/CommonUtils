@@ -856,7 +856,7 @@ object SystemTools {
     @JvmStatic
     fun getAppSignatureSHA1(context: Context,type:String, packageName: String?): String? {
         val signature = getAppSignature(context, packageName) ?: return null
-        return DisposeTools.encryptSHA1ToString(type, signature[0].toByteArray())
+        return IndiaDisposeUtils.encryptSHA1ToString(type, signature[0].toByteArray())
             .replace("(?<=[0-9A-F]{2})[0-9A-F]{2}".toRegex(), ":$0")
     }
 

@@ -31,7 +31,7 @@ import java.lang.reflect.Method
 import java.net.NetworkInterface
 import java.util.*
 
-object AppTools {
+object IndiaAppUtils {
 
     private var mActivityManager: ActivityManager? = null
     var sStatus = Status()

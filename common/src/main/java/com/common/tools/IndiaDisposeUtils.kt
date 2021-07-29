@@ -5,7 +5,7 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 
-object DisposeTools {
+object IndiaDisposeUtils {
 
     /**
      * SHA1加密

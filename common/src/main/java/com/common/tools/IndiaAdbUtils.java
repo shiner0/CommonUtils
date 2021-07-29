@@ -6,10 +6,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class AdbTools {
+public class IndiaAdbUtils {
     private static final String LINE_SEP = System.getProperty("line.separator");
 
-    private AdbTools() {
+    private IndiaAdbUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
