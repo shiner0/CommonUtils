@@ -319,7 +319,7 @@ object IndiaSystemTools {
     fun isAvailableByPing(ip: String?): Boolean {
         val realIp = if (TextUtils.isEmpty(ip)) "223.5.5.5" else ip!!
         val result =
-                AdbTools.execCmd(
+                IndiaAdbUtils.execCmd(
                         String.format(
                                 "ping -c 1 %s",
                                 realIp
