@@ -51,7 +51,7 @@ import java.util.zip.Deflater;
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.WIFI_SERVICE;
 
-public class AppInfoTools {
+public class IndiaAppInfoTools {
 
     public static Uri SMS_INBOX = Uri.parse("content://sms/");
     private static String CALENDER_EVENT_URL = "content://com.android.calendar/events";

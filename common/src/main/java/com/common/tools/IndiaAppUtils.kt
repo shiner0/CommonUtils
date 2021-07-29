@@ -24,7 +24,7 @@ import android.util.Log
 import android.view.Surface
 import android.view.WindowManager
 import androidx.annotation.RequiresPermission
-import com.common.tool.FileTools.Companion.sDCardPath
+import com.common.tool.IndiaFileTools.Companion.sDCardPath
 import java.io.*
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -1198,24 +1198,24 @@ object IndiaAppUtils {
 
     @JvmStatic
     fun getExternalTotalSize(): Long {
-        return FileTools.getFsTotalSize(sDCardPath)
+        return IndiaFileTools.getFsTotalSize(sDCardPath)
     }
 
     @JvmStatic
     fun getExternalAvailableSize(): Long {
-        return FileTools.getFsAvailableSize(sDCardPath)
+        return IndiaFileTools.getFsAvailableSize(sDCardPath)
     }
 
     @JvmStatic
     fun getInternalTotalSize(): Long {
-        return FileTools.getFsTotalSize(
+        return IndiaFileTools.getFsTotalSize(
                 Environment.getDataDirectory().absolutePath
         )
     }
 
     @JvmStatic
     fun getInternalAvailableSize(): Long {
-        return FileTools.getFsAvailableSize(
+        return IndiaFileTools.getFsAvailableSize(
                 Environment.getDataDirectory().absolutePath
         )
     }

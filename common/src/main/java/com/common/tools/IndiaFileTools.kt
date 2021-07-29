@@ -9,7 +9,7 @@ import java.io.*
 import java.lang.Exception
 
 
-class FileTools {
+class IndiaFileTools {
 
     companion object {
 
