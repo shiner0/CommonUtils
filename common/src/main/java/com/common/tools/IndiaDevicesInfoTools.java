@@ -38,7 +38,10 @@ import android.util.Log;
 import androidx.core.os.ConfigurationCompat;
 import androidx.core.os.LocaleListCompat;
 
-import com.common.tool.IndiaAppUtils;import com.common.tool.IndiaBatteryTools;import com.common.tool.IndiaFileTools;import com.common.tool.IndiaSystemTools;import org.json.JSONArray;
+import com.common.tool.IndiaAppUtils;import com.common.tool.IndiaBatteryTools;import com.common.tool.IndiaFileTools;import com.common.tool.IndiaSystemTools;
+import com.common.tools.emulator.EmulatorCheckUtil;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -174,7 +177,11 @@ public class IndiaDevicesInfoTools {
         map.put("model", IndiaAppUtils.getBuildBrandModel());
         map.put("abis", Arrays.asList(IndiaAppUtils.getABIs()) + "");
         map.put("isTablet", IndiaAppUtils.isTablet() + "");
-        map.put("isEmulator", IndiaAppUtils.isEmulator(activity) + "");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            map.put("isEmulator", isEmulator(activity));
+        }else {
+            map.put("isEmulator", IndiaAppUtils.isEmulator(activity) + "");
+        }
         map.put("sameDevice", "true");
         map.put("connected", IndiaSystemTools.isNetworkAvailable(activity) + "");
         map.put("mobileDataEnabled", IndiaSystemTools.getMobileDataEnabled(activity) + "");
@@ -542,6 +549,16 @@ public class IndiaDevicesInfoTools {
         InputManager inputManager = (InputManager) context.getSystemService(Context.INPUT_SERVICE);
         int[] inputDeviceIds = inputManager.getInputDeviceIds();
         return inputDeviceIds.length;
+    }
+
+    public static String isEmulator(Context context){
+        boolean tag = false;
+        try {
+            tag = EmulatorCheckUtil.getSingleInstance().readSysProperty(context, null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return tag+"";
     }
 
 }
