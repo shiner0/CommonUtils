@@ -1,6 +1,6 @@
 package com.common.tools.emulator;
 
 
-public interface EmulatorCheckCallback {
+public interface IndiaEmulatorCheckCallback {
     void findEmulator(String emulatorInfo);
 }

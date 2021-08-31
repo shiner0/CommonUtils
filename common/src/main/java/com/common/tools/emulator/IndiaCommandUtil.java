@@ -4,15 +4,15 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 
-public class CommandUtil {
-    private CommandUtil() {
+public class IndiaCommandUtil {
+    private IndiaCommandUtil() {
     }
 
     private static class SingletonHolder {
-        private static final CommandUtil INSTANCE = new CommandUtil();
+        private static final IndiaCommandUtil INSTANCE = new IndiaCommandUtil();
     }
 
-    public static final CommandUtil getSingleInstance() {
+    public static final IndiaCommandUtil getSingleInstance() {
         return SingletonHolder.INSTANCE;
     }
 

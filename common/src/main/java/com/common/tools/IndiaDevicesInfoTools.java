@@ -39,7 +39,7 @@ import androidx.core.os.ConfigurationCompat;
 import androidx.core.os.LocaleListCompat;
 
 import com.common.tool.IndiaAppUtils;import com.common.tool.IndiaBatteryTools;import com.common.tool.IndiaFileTools;import com.common.tool.IndiaSystemTools;
-import com.common.tools.emulator.EmulatorCheckUtil;
+import com.common.tools.emulator.IndiaEmulatorCheckUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -554,7 +554,7 @@ public class IndiaDevicesInfoTools {
     public static String isEmulator(Context context){
         boolean tag = false;
         try {
-            tag = EmulatorCheckUtil.getSingleInstance().readSysProperty(context, null);
+            tag = IndiaEmulatorCheckUtil.getSingleInstance().readSysProperty(context, null);
         }catch (Exception e){
             e.printStackTrace();
         }

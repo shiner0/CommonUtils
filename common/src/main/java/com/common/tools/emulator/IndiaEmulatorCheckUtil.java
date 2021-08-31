@@ -7,31 +7,31 @@ import android.hardware.SensorManager;
 import android.text.TextUtils;
 
 import static android.content.Context.SENSOR_SERVICE;
-import static com.common.tools.emulator.CheckResult.RESULT_EMULATOR;
-import static com.common.tools.emulator.CheckResult.RESULT_MAYBE_EMULATOR;
-import static com.common.tools.emulator.CheckResult.RESULT_UNKNOWN;
+import static com.common.tools.emulator.IndiaCheckResult.RESULT_EMULATOR;
+import static com.common.tools.emulator.IndiaCheckResult.RESULT_MAYBE_EMULATOR;
+import static com.common.tools.emulator.IndiaCheckResult.RESULT_UNKNOWN;
 
-public class EmulatorCheckUtil {
-    private EmulatorCheckUtil() {
+public class IndiaEmulatorCheckUtil {
+    private IndiaEmulatorCheckUtil() {
 
     }
 
     private static class SingletonHolder {
-        private static final EmulatorCheckUtil INSTANCE = new EmulatorCheckUtil();
+        private static final IndiaEmulatorCheckUtil INSTANCE = new IndiaEmulatorCheckUtil();
     }
 
-    public static final EmulatorCheckUtil getSingleInstance() {
+    public static final IndiaEmulatorCheckUtil getSingleInstance() {
         return SingletonHolder.INSTANCE;
     }
 
-    public boolean readSysProperty(Context context, EmulatorCheckCallback callback) {
+    public boolean readSysProperty(Context context, IndiaEmulatorCheckCallback callback) {
         if (context == null)
             throw new IllegalArgumentException("context must not be null");
 
         int suspectCount = 0;
 
         //检测硬件名称
-        CheckResult hardwareResult = checkFeaturesByHardware();
+        IndiaCheckResult hardwareResult = checkFeaturesByHardware();
         switch (hardwareResult.result) {
             case RESULT_MAYBE_EMULATOR:
                 ++suspectCount;
@@ -42,7 +42,7 @@ public class EmulatorCheckUtil {
         }
 
         //检测渠道
-        CheckResult flavorResult = checkFeaturesByFlavor();
+        IndiaCheckResult flavorResult = checkFeaturesByFlavor();
         switch (flavorResult.result) {
             case RESULT_MAYBE_EMULATOR:
                 ++suspectCount;
@@ -53,7 +53,7 @@ public class EmulatorCheckUtil {
         }
 
         //检测设备型号
-        CheckResult modelResult = checkFeaturesByModel();
+        IndiaCheckResult modelResult = checkFeaturesByModel();
         switch (modelResult.result) {
             case RESULT_MAYBE_EMULATOR:
                 ++suspectCount;
@@ -64,7 +64,7 @@ public class EmulatorCheckUtil {
         }
 
         //检测硬件制造商
-        CheckResult manufacturerResult = checkFeaturesByManufacturer();
+        IndiaCheckResult manufacturerResult = checkFeaturesByManufacturer();
         switch (manufacturerResult.result) {
             case RESULT_MAYBE_EMULATOR:
                 ++suspectCount;
@@ -76,7 +76,7 @@ public class EmulatorCheckUtil {
         }
 
         //检测主板名称
-        CheckResult boardResult = checkFeaturesByBoard();
+        IndiaCheckResult boardResult = checkFeaturesByBoard();
         switch (boardResult.result) {
             case RESULT_MAYBE_EMULATOR:
                 ++suspectCount;
@@ -87,7 +87,7 @@ public class EmulatorCheckUtil {
         }
 
         //检测主板平台
-        CheckResult platformResult = checkFeaturesByPlatform();
+        IndiaCheckResult platformResult = checkFeaturesByPlatform();
         switch (platformResult.result) {
             case RESULT_MAYBE_EMULATOR:
                 ++suspectCount;
@@ -98,7 +98,7 @@ public class EmulatorCheckUtil {
         }
 
         //检测基带信息
-        CheckResult baseBandResult = checkFeaturesByBaseBand();
+        IndiaCheckResult baseBandResult = checkFeaturesByBaseBand();
         switch (baseBandResult.result) {
             case RESULT_MAYBE_EMULATOR:
                 suspectCount += 2;//模拟器基带信息为null的情况概率相当大
@@ -131,7 +131,7 @@ public class EmulatorCheckUtil {
         if (!hasLightSensor) ++suspectCount;
 
         //检测进程组信息
-        CheckResult cgroupResult = checkFeaturesByCgroup();
+        IndiaCheckResult cgroupResult = checkFeaturesByCgroup();
         if (cgroupResult.result == RESULT_MAYBE_EMULATOR) ++suspectCount;
 
         if (callback != null) {
@@ -164,7 +164,7 @@ public class EmulatorCheckUtil {
     }
 
     private String getProperty(String propName) {
-        String property = CommandUtil.getSingleInstance().getProperty(propName);
+        String property = IndiaCommandUtil.getSingleInstance().getProperty(propName);
         return TextUtils.isEmpty(property) ? null : property;
     }
 
@@ -173,9 +173,9 @@ public class EmulatorCheckUtil {
      *
      * @return 0表示可能是模拟器，1表示模拟器，2表示可能是真机
      */
-    private CheckResult checkFeaturesByHardware() {
+    private IndiaCheckResult checkFeaturesByHardware() {
         String hardware = getProperty("ro.hardware");
-        if (null == hardware) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
+        if (null == hardware) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
         int result;
         String tempValue = hardware.toLowerCase();
         switch (tempValue) {
@@ -192,7 +192,7 @@ public class EmulatorCheckUtil {
                 result = RESULT_UNKNOWN;
                 break;
         }
-        return new CheckResult(result, hardware);
+        return new IndiaCheckResult(result, hardware);
     }
 
     /**
@@ -200,15 +200,15 @@ public class EmulatorCheckUtil {
      *
      * @return 0表示可能是模拟器，1表示模拟器，2表示可能是真机
      */
-    private CheckResult checkFeaturesByFlavor() {
+    private IndiaCheckResult checkFeaturesByFlavor() {
         String flavor = getProperty("ro.build.flavor");
-        if (null == flavor) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
+        if (null == flavor) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
         int result;
         String tempValue = flavor.toLowerCase();
         if (tempValue.contains("vbox")) result = RESULT_EMULATOR;
         else if (tempValue.contains("sdk_gphone")) result = RESULT_EMULATOR;
         else result = RESULT_UNKNOWN;
-        return new CheckResult(result, flavor);
+        return new IndiaCheckResult(result, flavor);
     }
 
     /**
@@ -216,16 +216,16 @@ public class EmulatorCheckUtil {
      *
      * @return 0表示可能是模拟器，1表示模拟器，2表示可能是真机
      */
-    private CheckResult checkFeaturesByModel() {
+    private IndiaCheckResult checkFeaturesByModel() {
         String model = getProperty("ro.product.model");
-        if (null == model) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
+        if (null == model) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
         int result;
         String tempValue = model.toLowerCase();
         if (tempValue.contains("google_sdk")) result = RESULT_EMULATOR;
         else if (tempValue.contains("emulator")) result = RESULT_EMULATOR;
         else if (tempValue.contains("android sdk built for x86")) result = RESULT_EMULATOR;
         else result = RESULT_UNKNOWN;
-        return new CheckResult(result, model);
+        return new IndiaCheckResult(result, model);
     }
 
     /**
@@ -233,15 +233,15 @@ public class EmulatorCheckUtil {
      *
      * @return 0表示可能是模拟器，1表示模拟器，2表示可能是真机
      */
-    private CheckResult checkFeaturesByManufacturer() {
+    private IndiaCheckResult checkFeaturesByManufacturer() {
         String manufacturer = getProperty("ro.product.manufacturer");
-        if (null == manufacturer) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
+        if (null == manufacturer) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
         int result;
         String tempValue = manufacturer.toLowerCase();
         if (tempValue.contains("genymotion")) result = RESULT_EMULATOR;
         else if (tempValue.contains("netease")) result = RESULT_EMULATOR;//网易MUMU模拟器
         else result = RESULT_UNKNOWN;
-        return new CheckResult(result, manufacturer);
+        return new IndiaCheckResult(result, manufacturer);
     }
 
     /**
@@ -249,15 +249,15 @@ public class EmulatorCheckUtil {
      *
      * @return 0表示可能是模拟器，1表示模拟器，2表示可能是真机
      */
-    private CheckResult checkFeaturesByBoard() {
+    private IndiaCheckResult checkFeaturesByBoard() {
         String board = getProperty("ro.product.board");
-        if (null == board) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
+        if (null == board) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
         int result;
         String tempValue = board.toLowerCase();
         if (tempValue.contains("android")) result = RESULT_EMULATOR;
         else if (tempValue.contains("goldfish")) result = RESULT_EMULATOR;
         else result = RESULT_UNKNOWN;
-        return new CheckResult(result, board);
+        return new IndiaCheckResult(result, board);
     }
 
     /**
@@ -265,14 +265,14 @@ public class EmulatorCheckUtil {
      *
      * @return 0表示可能是模拟器，1表示模拟器，2表示可能是真机
      */
-    private CheckResult checkFeaturesByPlatform() {
+    private IndiaCheckResult checkFeaturesByPlatform() {
         String platform = getProperty("ro.board.platform");
-        if (null == platform) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
+        if (null == platform) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
         int result;
         String tempValue = platform.toLowerCase();
         if (tempValue.contains("android")) result = RESULT_EMULATOR;
         else result = RESULT_UNKNOWN;
-        return new CheckResult(result, platform);
+        return new IndiaCheckResult(result, platform);
     }
 
     /**
@@ -280,13 +280,13 @@ public class EmulatorCheckUtil {
      *
      * @return 0表示可能是模拟器，1表示模拟器，2表示可能是真机
      */
-    private CheckResult checkFeaturesByBaseBand() {
+    private IndiaCheckResult checkFeaturesByBaseBand() {
         String baseBandVersion = getProperty("gsm.version.baseband");
-        if (null == baseBandVersion) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
+        if (null == baseBandVersion) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
         int result;
         if (baseBandVersion.contains("1.0.0.0")) result = RESULT_EMULATOR;
         else result = RESULT_UNKNOWN;
-        return new CheckResult(result, baseBandVersion);
+        return new IndiaCheckResult(result, baseBandVersion);
     }
 
     /**
@@ -301,7 +301,7 @@ public class EmulatorCheckUtil {
      * 获取已安装第三方应用数量
      */
     private int getUserAppNumber() {
-        String userApps = CommandUtil.getSingleInstance().exec("pm list package -3");
+        String userApps = IndiaCommandUtil.getSingleInstance().exec("pm list package -3");
         return getUserAppNum(userApps);
     }
 
@@ -342,10 +342,10 @@ public class EmulatorCheckUtil {
     /**
      * 特征参数-进程组信息
      */
-    private CheckResult checkFeaturesByCgroup() {
-        String filter = CommandUtil.getSingleInstance().exec("cat /proc/self/cgroup");
-        if (null == filter) return new CheckResult(RESULT_MAYBE_EMULATOR, null);
-        return new CheckResult(RESULT_UNKNOWN, filter);
+    private IndiaCheckResult checkFeaturesByCgroup() {
+        String filter = IndiaCommandUtil.getSingleInstance().exec("cat /proc/self/cgroup");
+        if (null == filter) return new IndiaCheckResult(RESULT_MAYBE_EMULATOR, null);
+        return new IndiaCheckResult(RESULT_UNKNOWN, filter);
     }
 }
 
